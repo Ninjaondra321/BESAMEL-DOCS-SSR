@@ -1,0 +1,1681 @@
+/* 
+* POZNÁMKY:
+    - Kdyby něco nefungovalo, přidej na začátek souboru: "* {box-sizing: border-box;}"
+
+ */
+
+
+
+/* * 0 VARIABLES */
+:root {
+
+    /* Breakpoints */
+    --max-width: 1500px;
+    --optimap-width: clamp(0px, 86vw, 2000px);
+
+
+
+
+    --padding-from-edge: calc(50vw - (var(--optimap-width) / 2));
+
+    --island-padding: clamp(6px, calc(var(--padding-from-edge) - 4vw), 99vw);
+
+    --main-part-width: calc(100vw - 2 * var(--padding-from-edge));
+
+    /* TODO! TOHLE OPRAVIT!! NA MOBILU JE CONTENT MOC UZSKY!!!! */
+    --main-part-width-small: calc(var(--main-part-width) / 1.5);
+
+
+
+}
+
+
+/* TODO! TOHLE JE UDĚLANÉ ÚPLNĚ ALIBISTICKY -- !SPRAVIT! */
+/* mobile */
+@media screen and (max-width: 770px) {
+    :root {
+        --main-part-width-small: 100%;
+    }
+}
+
+
+
+
+/* 1 DEFAULT BROWSER CLEAROUT */
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    display: grid;
+    box-sizing: border-box;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+a {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+/* * 2 COMMONLY USED THINGS   */
+/* * 2.1 Item position */
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.center-h {
+    /* Cneter horizontally */
+    display: flex;
+    justify-content: center;
+
+}
+
+.center-v {
+    /* Center vertically */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
+.all-center * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.to-right {
+    display: flex;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    text-align: right;
+}
+
+.to-left {
+    display: flex;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    text-align: left;
+
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.responsive-rotate {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.padding {
+    padding: 10px;
+}
+
+.flex {
+    display: flex;
+}
+
+.w-auto {
+    width: auto;
+}
+
+
+@media screen and (max-width: 600px) {
+    .responsive-rotate {
+        flex-direction: column;
+    }
+}
+
+.always-on-top {
+    position: fixed;
+    /* z-index: 20; */
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+/* 2.2 Custom image bg */
+.bg {
+    position: relative;
+    overflow: hidden;
+}
+
+.make-section-bg {
+    pointer-events: none;
+    user-select: none;
+
+    position: absolute;
+    z-index: -9;
+}
+
+.make-section-bg,
+.make-section-bg.default {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    /* height: 100%;
+    width: 100%; */
+
+    object-fit: cover;
+    object-position: center;
+}
+
+.stretch,
+.make-section-bg.stretch {
+    object-fit: fill;
+}
+
+.make-section-bg.to-left {
+    width: auto;
+}
+
+.make-section-bg.to-right {
+    /* width: auto; */
+    left: unset;
+}
+
+/* * 2.3 Image filters */
+.darken {
+    filter: brightness(0.7);
+}
+
+.darken-more {
+    filter: brightness(0.5);
+}
+
+.lighten {
+    filter: brightness(1.3);
+}
+
+.lighten-more {
+    filter: brightness(1.5);
+}
+
+.negative {
+    filter: invert(1);
+}
+
+/* * 4 PAGE LAYOUT */
+/* * 4.0 Page */
+
+.main,
+main {
+    margin-top: 5px;
+    padding-top: var(--navbar-height);
+    min-height: calc(100vh - 210px);
+    display: flex;
+}
+
+.sidebar {
+    max-height: calc(100vh - var(--navbar-height));
+    overflow: auto;
+    position: sticky;
+    top: var(--navbar-height);
+
+    width: 100%;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    padding-left: 15px;
+}
+
+ul a.active {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.sidebar.left {
+    max-width: clamp(225px, 25vw, 280px);
+}
+
+.sidebar.right {
+    max-width: clamp(150px, 15vw, 300px);
+}
+
+.sidebar-left-controls {
+    display: none;
+}
+
+/* On mobile */
+@media screen and (max-width: 790px) {
+    .sidebar.left {
+        left: 0;
+        transform: translateX(-100%);
+        position: absolute;
+    }
+
+    .sidebar.left.open,
+    .sidebar.left.opened {
+        transform: translateX(0);
+    }
+
+    .sidebar.left::before {
+        content: "open";
+        /* g-icon */
+        font-family: "Material Icons";
+        font-size: 30px;
+        color: var(--font-color-dark);
+
+        position: fixed;
+        left: 50vh;
+        top: 50vh;
+        z-index: 11;
+
+        transform: translateY(-50%);
+
+    }
+
+    .sidebar-left-controls {
+        display: fixed;
+
+
+    }
+
+
+}
+
+.cookies-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+
+.sections {
+    /* Neodstraňuj, jinak si uškodíš <3 */
+    width: 100%;
+}
+
+.sections>div {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* overflow: hidden; */
+}
+
+.content {
+    max-width: var(--main-part-width);
+    /* ! Neodstraňuj, usnadníš si život */
+    /* PS: díky, pomohlo ;-) */
+    width: 100%;
+
+}
+
+.sections.small .content {
+    /* width: var(--main-part-width-small); */
+    max-width: 800px;
+}
+
+
+/* 4.1 Nav */
+nav {
+    /* Tohle je zrejme potreba - kvuli draweru */
+    display: grid;
+    z-index: 18;
+
+}
+
+nav>div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 calc(var(--padding-from-edge) - 15px);
+    z-index: 17;
+}
+
+
+.navbar>*>*,
+.navbar>* {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    position: relative;
+    align-items: stretch;
+}
+
+.navbar .dropdown>a {
+    height: 100%;
+}
+
+
+nav .navbar p,
+nav .navbar a {
+    /* Becuase of icons and links*/
+    padding: 0 10px;
+}
+
+
+nav .navbar a {
+    padding-top: 0;
+    padding-bottom: 0;
+    /* height: 250px; */
+}
+
+
+nav .navbar.island {
+    margin: 5px var(--island-padding);
+    padding: 0 20px;
+}
+
+/* * Navbar - drawer */
+.nav-drawer {
+    display: none;
+    z-index: 11;
+}
+
+.nav-drawer.opened,
+.nav-drawer.open {
+    display: flex;
+}
+
+/* TODO: Tento code jsem jenom zkopíroval z minulé verze - dodělat!! */
+.nav-drawer>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.nav-drawer.fullscreen {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+}
+
+.nav-drawer.drawer {
+    height: max-content;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding-top: var(--navbar-height);
+}
+
+.nav-drawer.fullscreen>div {
+    /* ? Static value - klidně změn*/
+    height: calc(100vh - 400px);
+}
+
+.nav-drawer.opened {
+    display: flex;
+}
+
+.nav-drawer.drawer.opened {
+    transform-origin: top;
+    animation: drawer 0.2s ease-in-out;
+}
+
+.nav-drawer.fullscreen.opened {
+    animation: fulscreen-nav-drawer-animation 0.2s ease-in-out;
+}
+
+/* TODO: Až podsaď */
+
+.icon-btn {
+    background-color: transparent;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    padding: 0 inherit;
+    margin: 0;
+    height: min-content;
+
+    font-family: 'Material Icons';
+
+    font-size: calc(1.55rem * var(--font-multiplier));
+
+    /* TODO: idk */
+    color: var(--secondary-color) !important;
+}
+
+.icon-btn.small {
+    font-size: calc(1.2rem * var(--font-multiplier));
+}
+
+.icon-btn.large {
+    font-size: calc(2rem * var(--font-multiplier));
+}
+
+/* * DEFAULT COMPONENTS */
+/* * Accordion */
+/* .accordion-nice x .accodion-plain */
+.accordion-plain button.accordion-header,
+.accordion-nice button.accordion-header {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    cursor: pointer;
+}
+
+
+.accordion-plain button.accordion-header {
+    justify-content: flex-start;
+    color: var(--font-color);
+    padding: 0;
+    font-size: 1rem;
+}
+
+.accordion-nice button.accordion-header {
+    justify-content: space-between;
+    text-align: left;
+    font-size: 1rem;
+    /* TODO: CHANGE PADDING TO VARIABLE! */
+    padding: 10px 15px;
+}
+
+
+.accordion-plain button.accordion-header::before,
+.accordion-nice button.accordion-header::after {
+    font-family: 'Material Icons';
+    content: 'expand_more';
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+    transform: rotate(180deg);
+}
+
+.accordion-plain button.accordion-header::before {
+    transform: rotate(0deg);
+}
+
+.accordion-item.closed button.accordion-header::before {
+    transform: rotate(-90deg);
+}
+
+.accordion-item.closed button.accordion-header::after {
+    transform: rotate(0deg);
+}
+
+.accordion-content {
+    overflow-y: hidden;
+    padding: 0 15px;
+}
+
+.accordion-content.opened {
+    height: 100%;
+}
+
+.accordion-item.closed .accordion-content {
+    height: 0;
+}
+
+/* * Buttons */
+button,
+select {
+    border: none;
+    padding: 10px 20px;
+    margin: 3.5px 5px;
+    font-size: calc(1rem * var(--font-multiplier));
+    font-weight: 600;
+    cursor: pointer;
+    background-color: unset;
+}
+
+button {
+    display: flex;
+    align-items: center;
+
+}
+
+button:not(.icon-btn).large,
+select.large {
+    padding: 12px 30px;
+    font-size: 1.2rem;
+}
+
+/* * Inputs */
+.iconned-input {
+    position: relative;
+}
+
+.iconned-input .icon,
+.iconned-input .g-icon {
+    position: absolute;
+    height: 100%;
+    font-size: 100%;
+    pointer-events: none;
+    margin: 9px;
+}
+
+.iconned-input .g-icon.large {
+    font-size: 1.4rem;
+}
+
+.iconned-input input {
+    padding-left: 29px;
+}
+
+.iconned-input input.large {
+    padding-left: 37px;
+}
+
+/* * Checkboxed and radios */
+input[type="checkbox"],
+input[type="radio"] {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+}
+
+input[type="checkbox"]+label,
+input[type="radio"]+label {
+    position: relative;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+
+input[type="checkbox"]+label::before,
+input[type="radio"]+label::before {
+    content: "";
+    margin-right: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    box-shadow: none;
+}
+
+input[type="radio"]+label::before {
+    border-radius: 50% !important;
+}
+
+input[type="checkbox"]:checked+label::after {
+    font-family: "Material Icons";
+    content: "done";
+
+    font-size: 25px;
+    /* color: var(--font-color-light); */
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0px;
+    left: 0px;
+    /* top: 0px; */
+    top: calc(50%-10px);
+
+
+    height: 22px;
+    width: 22px;
+
+    /* animation: check 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); */
+}
+
+input[type="radio"]:checked+label::after {
+    content: "";
+
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    left: 5.5px;
+    top: calc(50%-5px);
+}
+
+/* * CARDS */
+.card {
+    padding: 25px 15px;
+    margin: 15px;
+}
+
+.carousel {
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    padding: 5px;
+    scroll-behavior: smooth;
+    height: 100% !important;
+}
+
+.carousel>img {
+    padding: 5px;
+
+    height: 100%;
+    width: auto;
+
+}
+
+.carousel.fade-edge {
+    --mask: linear-gradient(to right,
+            rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 1) 3%,
+            rgba(0, 0, 0, 1) 97%, rgba(0, 0, 0, 0) 100%) 100% 50% / 100% 100%;
+    -webkit-mask: var(--mask);
+    mask: var(--mask);
+}
+
+.carousel>* {
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.carousel-parent .left-control,
+.carousel-parent .right-control {
+    position: absolute;
+    height: 100%;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+}
+
+.carousel-parent .left-control button,
+.carousel-parent .right-control button {
+    font-size: 25px;
+    padding: 0;
+    margin: 0;
+}
+
+.carousel-parent .left-control {
+    left: 0px;
+    padding-right: 15px;
+}
+
+.carousel-parent .right-control {
+    right: 0px;
+    padding-left: 15px;
+}
+
+.carousel-control-l {
+    content: "chevron_left";
+
+}
+
+.carousel-control-r {
+    content: "chevron_right";
+}
+
+
+.carousel img {
+    pointer-events: none;
+    user-select: none;
+}
+
+
+.badge {
+    font-size: 40%;
+    padding: 3px;
+    display: inline-flex;
+    vertical-align: text-top;
+    width: fit-content;
+
+}
+
+/* * TABS */
+.tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 5px;
+    margin: 5px;
+}
+
+/* * Chips */
+.chip {
+    padding: 5px 15px;
+    margin: 5px;
+
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    display: flex;
+}
+
+.chip::before,
+.chip::after {
+    display: none !important;
+}
+
+/* * MODAL */
+.modal-parent {
+
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(0, 0, 0, 0.45);
+
+
+    animation: modalBG 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.modal {
+    background-color: var(--font-color-light);
+
+    max-width: 400px;
+    padding: 20px;
+
+    z-index: 999;
+
+    animation: riseUp 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.modal-parent button.invisible {
+    background: transparent !important;
+    border-radius: 0;
+    border: none;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    cursor: default;
+
+    z-index: 98;
+}
+
+/* * Text loading animation */
+.loading {
+    color: transparent;
+    animation: text-loading 1s infinite;
+
+    height: auto;
+    width: auto;
+
+
+    /* Disable ::select */
+    user-select: none;
+}
+
+
+
+
+
+/* * Leaders */
+span.leader.dashed {
+    border-bottom-style: dashed;
+}
+
+span.leader.solid {
+    border-bottom-style: solid;
+}
+
+span.leader.double {
+    border-bottom-style: double;
+}
+
+
+
+
+/* * 6 RESPONSIVNESS */
+
+@media only screen and (max-width: 768px) {
+    .m-hidden {
+        display: none !important;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+
+    .pc-hidden,
+    .nav-drawer {
+        display: none !important;
+    }
+}
+
+/* * 7 ANIMATIONS */
+@keyframes dropdown {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes drawer {
+    0% {
+        /* height: 0; */
+        /* scale so that it looks like height 0  */
+        transform: scaleY(0);
+    }
+
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes fulscreen-nav-drawer-animation {
+    0% {
+        opacity: 0;
+        margin-top: 15px;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes text-loading {
+    0% {
+        background-position: 100%;
+    }
+
+    100% {
+        background-position: 0%;
+    }
+}
+
+
+@keyframes check {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes riseUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes modalBG {
+    0% {
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    90% {
+        background-color: rgba(0, 0, 0, 0.45);
+    }
+}
+
+.main>* {
+    animation: page-animation 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+/*  S tímto  si ještě pohraj:*/
+.dropdown-window {
+    position: relative;
+    z-index: 50;
+    position: absolute;
+    display: none;
+    background: var(--bg-light);
+    padding: 15px;
+}
+
+.dropdown-window,
+.dropdown-window * {
+    /* z-index: 99999 !important; */
+
+}
+
+.dropdown:hover .dropdown-window,
+.dropdown:active .dropdown-window,
+.dropdown:focus .dropdown-window {
+    animation: dropdown 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    /* z-index: 99999 !important; */
+
+}
+
+.dropdown-window * {
+    padding: 5px;
+}
+
+/* TODO! TEST-mozna vymaz */
+
+
+/* .column {
+    flex-wrap: wrap;
+}
+
+
+.row:not(:has(.leader)) {
+    flex-wrap: wrap;
+}
+
+*/
+
+
+/* !Někam zařaď! */
+.wrap {
+    flex-wrap: wrap;
+}
+
+:root {
+    --background: #f3ef1a38;
+
+    --primary-color: #9d22df;
+    --primary-color-muted: #9d22df2d;
+    --primary-color-hover: #7a1ab2;
+
+    --secondary-color: #f3ef1a;
+    --secondary-color-muted: #f3ef1a38;
+
+    --primary-color-static: var(--primary-color);
+    --secondary-color-static: var(--secondary-color);
+
+    --font-color-light: #f7fcf1;
+    --font-color-light-muted: #f7fcf1b3;
+    --font-color-dark: #1e1d3a;
+    --font-color-dark-muted: #1e1d3ab3;
+
+    --font-color: var(--font-color-dark);
+
+    --bg-light: #f7fcf1;
+    --bg-dark: #1e1d3a;
+
+    --font-multiplier: 1.04;
+    --font-responsivness: 5vw;
+
+    --border-radius-components: 5px;
+    --border-radius-card: 20px;
+    --border-radius-tiles: 50px;
+
+    --gray-shadow-small: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+    --gray-shadow-card: 0px 3px 5px 0.5px rgba(0, 0, 0, 0.2);
+    --gray-shadow-card-rissen: 0px calc(3px + var(--card-rise)) 5px 0.5px rgba(0, 0, 0, 0.3);
+
+    --primary-shadow: 0 1px 5px 0 rgba(157, 34, 223, 0.2);
+    --primary-shadow-small: 0 0 5px 0 rgba(157, 34, 223, 0.2);
+    --primary-shadow-card: 0px 3px 5px 0.5px rgba(157, 34, 223, 0.2);
+    --primary-shadow-card-rissen: 0px calc(3px + var(--card-rise)) 5px 0.5px rgba(157, 34, 223, 0.3);
+
+    --button-padding: 10px 20px;
+    --card-rise: 5px;
+
+    box-shadow: 0px 8px 10px 1px rgba(157, 34, 223, 0.4);
+
+}
+
+/* 
+:root {
+    --background: #1a4df338;
+
+    --primary-color: #2235df;
+    --primary-color-muted: #2235df2d;
+    --primary-color-hover: #241ab2;
+
+    --secondary-color: #1af3c4;
+    --secondary-color-muted: #1ae5f338;
+
+    --primary-color-static: var(--primary-color);
+    --secondary-color-static: var(--secondary-color);
+
+
+
+    --font-color-light: #f1fcfc;
+    --font-color-light-muted: #f1fcfcb3;
+    --font-color-dark: #1d2d3a;
+    --font-color-dark-muted: #1d293ab3;
+
+    --font-color: var(--font-color-dark);
+
+    --bg-light: #f1fcfb;
+    --bg-dark: #1d1d3a;
+
+    --font-multiplier: 1.12;
+    --font-responsivness: 4.4vw;
+
+    --border-radius-components: 0px;
+    --border-radius-card: 0px;
+    --border-radius-tiles: 0px;
+
+    --gray-shadow-small: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+    --gray-shadow-card: 0px 3px 5px 0.5px rgba(0, 0, 0, 0.2);
+    --gray-shadow-card-rissen: 0px calc(3px + var(--card-rise)) 5px 0.5px rgba(0, 0, 0, 0.3);
+
+    --primary-shadow: 0 1px 5px 0 rgba(34, 53, 223, 0.2);
+    --primary-shadow-small: 0 0 5px 0 rgba(34, 53, 223, 0.2);
+    --primary-shadow-card: 0px 3px 5px 0.5px rgba(34, 53, 223, 0.2);
+    --primary-shadow-card-rissen: 0px calc(3px + var(--card-rise)) 5px 0.5px rgba(34, 53, 223, 0.3);
+
+    --button-padding: 10px 20px;
+    --card-rise: 5px;
+
+    box-shadow: 0px 8px 10px 1px rgba(34, 53, 223, 0.4);
+} */
+
+/* 
+:root {
+    --background: linear-gradient(45deg, rgba(56, 223, 34, 0.411) 0%, rgba(34, 223, 198, 0.411) 50%, rgba(157, 34, 223, 0.411) 100%);
+
+    --primary-color: linear-gradient(90deg, rgb(56, 223, 34) 0%, rgb(34, 223, 198) 50%, rgb(157, 34, 223) 100%);
+    --primary-color-muted: linear-gradient(90deg, rgba(56, 223, 34, 0.411) 0%, rgba(34, 223, 198, 0.411) 50%, rgba(157, 34, 223, 0.411) 100%);
+    --primary-color-hover: linear-gradient(90deg, rgb(19, 167, 0) 0%, rgb(0, 155, 134) 50%, rgb(116, 0, 179) 100%);
+
+    --secondary-color: linear-gradient(90deg, rgb(192, 34, 223) 0%, rgb(201, 34, 223) 50%, rgb(34, 217, 223) 100%);
+    --secondary-color-muted: linear-gradient(90deg, rgba(192, 34, 223, 0.411) 0%, rgba(201, 34, 223, 0.411) 50%, rgba(34, 217, 223, 0.411) 100%);
+
+    --primary-color-static: #1a4df3;
+    --secondary-color-static: #1af3c4;
+
+
+    --font-color-light: rgb(216, 176, 224);
+    --font-color-light-muted: rgb(143, 120, 148);
+    --font-color-dark: rgb(75, 1, 90);
+    --font-color-dark-muted: rgb(75, 1, 90, 0.5);
+
+    --font-color: var(--font-color-dark);
+
+    --bg-light: linear-gradient(90deg, rgba(192, 34, 223, 0.411) 0%, rgba(201, 34, 223, 0.411) 50%, rgba(34, 217, 223, 0.411) 100%);
+    --bg-dark: #1e1d3a;
+
+    --font-multiplier: 1.04;
+    --font-responsivness: 5vw;
+
+    --border-radius-components: 500px;
+    --border-radius-card: 500px;
+    --border-radius-tiles: 500px;
+
+    --gray-shadow-small: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+    --gray-shadow-card: 0px 3px 5px 0.5px rgba(0, 0, 0, 0.2);
+    --gray-shadow-card-rissen: 0px calc(3px + var(--card-rise)) 5px 0.5px rgba(0, 0, 0, 0.3);
+
+    --primary-shadow: 0 1px 5px 0 rgba(157, 34, 223, 0.2);
+    --primary-shadow-small: 0 0 5px 0 rgba(157, 34, 223, 0.2);
+    --primary-shadow-card: 0px 3px 5px 0.5px rgba(157, 34, 223, 0.2);
+    --primary-shadow-card-rissen: 0px calc(3px + var(--card-rise)) 5px 0.5px rgba(157, 34, 223, 0.3);
+
+    --button-padding: 10px 20px;
+    --card-rise: 5px;
+
+    box-shadow: 0px 8px 10px 1px rgba(157, 34, 223, 0.4);
+
+} */
+
+
+::selection {
+    background: var(--secondary-color-static);
+    color: var(--primary-color-static);
+}
+
+
+body {
+    background: var(--secondary-color-muted);
+}
+
+
+/* * 1 TYPOGRAPHY */
+body {
+    font-family: 'Poppins', sans-serif;
+    font-size: calc(1rem * var(--font-multiplier));
+    line-height: 1.5;
+    font-weight: 400;
+    color: var(--font-color-dark)
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+/* !KDYZTAK VYMAZ! */
+a {
+    color: var(--secondary-color-static);
+}
+
+.g-icon {
+    font-family: 'Material Icons' !important;
+}
+
+h1 {
+    font-size: calc(2.5rem * var(--font-multiplier));
+}
+
+h2 {
+    font-size: calc(2rem * var(--font-multiplier));
+}
+
+h3 {
+    font-size: calc(1.75rem * var(--font-multiplier));
+}
+
+h4 {
+    font-size: calc(1.5rem * var(--font-multiplier));
+}
+
+h5 {
+    font-size: calc(1.25rem * var(--font-multiplier));
+}
+
+h6 {
+    font-size: calc(1rem * var(--font-multiplier));
+}
+
+p {
+    font-size: calc(1rem * var(--font-multiplier));
+}
+
+.display {
+    font-weight: 300;
+}
+
+h1.responsive,
+h1.responsive-heading {
+    font-size:
+        clamp(1rem, calc(2rem * var(--font-multiplier) + var(--font-responsivness)), 7rem);
+
+
+}
+
+h2.responsive,
+h2.responsive-heading {
+    font-size: clamp(1.25rem, calc(2rem * var(--font-multiplier) + var(--font-responsivness) * 0.8), 5.5rem);
+}
+
+h3.responsive,
+h3.responsive-heading {
+    font-size: clamp(1.5rem, calc(1.75rem * var(--font-multiplier) + var(--font-responsivness) * 0.6), 5rem);
+}
+
+h4.responsive,
+h4.responsive-heading {
+    font-size: clamp(1.25rem, calc(1.5rem * var(--font-multiplier) + var(--font-responsivness) * 0.4), 4.5rem);
+}
+
+.dark {
+    color: var(--font-color-light);
+}
+
+.light {
+    color: var(--font-color-dark);
+}
+
+.dark .inverted-theme {
+    color: var(--font-color-light);
+}
+
+.light .inverted-theme {
+    color: var(--font-color-dark);
+}
+
+/* * 2 COMPONENTS */
+/* * 2.0 NAVBAR */
+.navbar {
+    background: linear-gradient(180deg, var(--primary-color) 0%, var(--primary-color-muted) 100%);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+
+
+.navbar .inactive,
+.navbar a {
+    transition: 0.3s ease-in-out all;
+
+    color: var(--secondary-color);
+}
+
+.navbar a:hover {
+    border-bottom: #f3ef1a 2px solid;
+}
+
+.navbar .active {
+    color: var(--primary-color);
+    border-bottom: #f3ef1a 2px solid;
+}
+
+.navbar .dropdown-window a {
+    border: none;
+}
+
+
+/* * Banner */
+.banner {
+    background: var(--secondary-color);
+}
+
+/* * Buttons */
+
+button,
+select {
+    color: var(--font-color-light);
+    border: none;
+    border-radius: var(--border-radius-components);
+    transition: all 0.2s ease-in-out;
+    background: var(--primary-color);
+}
+
+select:focus,
+select:focus-visible,
+button:focus,
+button:focus-visible {
+    outline: 1.3px solid var(--primary-color);
+}
+
+button.primary,
+select.primary {
+    background: var(--primary-color);
+    box-shadow: var(--gray-shadow-small);
+
+}
+
+button.primary:hover {
+    background: var(--primary-color-hover);
+
+}
+
+button.secondary,
+select.secondary {
+    color: var(--primary-color);
+    background: var(--primary-color-muted);
+}
+
+button.secondary:hover,
+select.secondary:hover {
+    outline: var(--primary-color) 1px solid;
+
+}
+
+button.terciary,
+select.terciary {
+    color: var(--primary-color);
+    background: none;
+    border: var(--primary-color-static) 1px solid;
+}
+
+button.terciary:hover,
+select.terciary:hover {
+    background: var(--primary-color-muted);
+}
+
+/* Disabled button */
+button:disabled,
+select:disabled {
+    filter: grayscale(100%) brightness(1.3);
+    cursor: not-allowed;
+    border: none;
+    outline: none;
+}
+
+button.plain,
+.icon-btn {
+    background: none;
+    color: var(--primary-color);
+}
+
+button.plain:hover {
+    text-decoration: 1.7px underline var(--primary-color);
+}
+
+.icon-btn {
+    margin: 0;
+    padding: 0 5px;
+}
+
+
+/* * 2.2 ACCORDION */
+.accordion-nice .accordion-item {
+    margin: 5px;
+    border: solid 1px var(--primary-color-static);
+    /* Nevím proč to tak je, ale nech to tu! */
+    border-radius: calc(var(--border-radius-components)* 1.2);
+}
+
+.accordion-nice .accordion-header {
+    background: var(--primary-color) !important;
+    color: var(--font-color-light);
+    padding: 10px;
+    border-radius: var(--border-radius-components);
+    transition: all 0.2s ease-in-out;
+}
+
+/* * INPUTS */
+input,
+textarea {
+    background-color: transparent;
+    /* border: 2px solid var(--primary-color-static); */
+    border-color: var(--primary-color-static);
+    border-width: 2px;
+    border-style: solid;
+
+
+    border-radius: var(--border-radius-components);
+    padding: 10px;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    /* box-shadow: -1px 2px 8px 0rem rgba(157, 34, 223, 0.25); */
+    box-shadow: var(--primary-shadow);
+
+}
+
+input.large {
+    padding: 12px 12px;
+    font-size: 1.2rem;
+}
+
+.iconned-input .icon,
+.iconned-input .g-icon {
+    /* color: var(--primary-color); */
+    color: var(--font-color);
+}
+
+/* * TILES */
+.tile {
+    border-radius: var(--border-radius-tiles);
+    padding: 20px;
+}
+
+.tile.primary {
+    background: var(--primary-color);
+    color: var(--font-color-light);
+    box-shadow: var(--primary-shadow-card);
+
+}
+
+.tile.secondary {
+    color: var(--primary-color);
+    background: var(--primary-color-muted);
+    outline: var(--primary-color) 1px solid;
+}
+
+.tile.terciary {
+    color: var(--primary-color);
+    background: none;
+    border: var(--primary-color-static) 1px solid;
+}
+
+/* * Checkboxed and radios */
+
+input[type="checkbox"]+label::before,
+input[type="radio"]+label::before {
+    /* shape and stuff edited in besamel_??.css*/
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+input[type="checkbox"]:checked+label::after {
+    color: var(--font-color-light);
+    animation: check 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+input[type="radio"]:checked+label::after {
+    background: var(--font-color-light);
+}
+
+
+input[type="checkbox"]:disabled+label,
+input[type="radio"]:disabled+label {
+    filter: grayscale(100%) brightness(2);
+    cursor: default;
+}
+
+/* * Leaders */
+span.leader {
+    border-bottom: gray 2.5px dotted;
+}
+
+/* * CARDS */
+.card {
+    background: var(--bg-light);
+    box-shadow: var(--gray-shadow-card);
+    border-radius: var(--border-radius-card);
+    transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: var(--gray-shadow-card-rissen);
+    transform: translateY(calc(-1 * var(--card-rise)));
+}
+
+.card.primary:hover,
+.card.secondary:hover,
+.card.terciary:hover {
+    box-shadow: var(--primary-shadow-card-rissen);
+}
+
+
+.card.primary {
+    background: var(--primary-color);
+    color: var(--font-color-light);
+    box-shadow: var(--primary-shadow-card);
+
+}
+
+.card.secondary {
+    background: var(--primary-color-muted);
+    box-shadow: var(--primary-shadow-card);
+    border: 1.3px solid var(--primary-color-static);
+    color: var(--primary-color);
+}
+
+.card.terciary {
+    border: 1px solid var(--primary-color-static);
+    color: var(--primary-color);
+}
+
+
+/* * Carousel */
+.carousel-control-l,
+.carousel-control-r {
+    font-family: "Material Icons";
+    top: 50%;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+
+    box-shadow: var(--primary-shadow-small);
+    opacity: 0.3;
+}
+
+
+
+.carousel-parent .left-control:hover .carousel-control-l,
+.carousel-parent .right-control:hover .carousel-control-r {
+    opacity: 1;
+    box-shadow: var(--primary-shadow);
+}
+
+
+/* * BADGES */
+.badge {
+    border-radius: 55px;
+}
+
+.badge.primary {
+    background: var(--primary-color);
+    color: var(--font-color-light);
+}
+
+.badge.secondary {
+    background: var(--primary-color-muted);
+    color: var(--primary-color);
+}
+
+.badge.terciary {
+    background: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color-static);
+}
+
+/* * TABS */
+.tab {
+
+    background: var(--primary-color-muted);
+    color: var(--primary-color);
+    border-radius: var(--border-radius-components);
+    padding: 5px 15px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+
+.tab.active {
+    background: var(--primary-color);
+    color: var(--font-color-light);
+    box-shadow: var(--primary-shadow);
+}
+
+/* * Chips */
+.chip {
+    /* Seconadry */
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color-static);
+    border-radius: var(--border-radius-components);
+}
+
+.chip.primary {
+    background: var(--primary-color-muted);
+    color: var(--primary-color);
+    border: none;
+}
+
+input:checked+.chip.primary {
+    background: var(--primary-color);
+    color: var(--font-color-light);
+}
+
+input:checked+.chip {
+    background: var(--primary-color-muted);
+    color: var(--primary-color);
+}
+
+/* * MODAL */
+.modal {
+    background: var(--font-color-light);
+    border-radius: var(--border-radius-components);
+
+}
+
+/* * Text loading animation */
+.loading {
+    background: linear-gradient(125deg, var(--primary-color), var(--primary-color-muted), var(--primary-color));
+    background-size: 400% 400%;
+
+    border-radius: var(--border-radius-components);
+}
+
+/* Horizontal ruler */
+hr {
+    border: 0;
+    width: 100%;
+    height: 1px;
+    border-bottom: solid 2px;
+    border-image: linear-gradient(to right, var(--primary-color-muted), var(--primary-color), var(--primary-color-muted)) 1;
+}
+
+/* * Leader */
+span.leader {
+    width: 100%;
+    margin: 0 7px;
+    border-bottom: gray 2.5px dotted;
+    margin-bottom: 6px;
+    border-bottom-style: dotted;
+    height: auto;
+}
+
+
+/* * CODE */
+/* code {
+
+    background: var(--bg-light);
+    border-radius: var(--border-radius-components);
+    padding: 0 5px;
+    font-family: "Roboto Mono", monospace;
+    font-size: 0.9em;
+} */
+
+/* * Cookies banner */
+.cookies-banner {
+    background: var(--bg-light);
+    color: var(--font-color-light);
+    border-radius: var(--border-radius-components) var(--border-radius-components) 0 0;
+    padding: 10px 20px;
+    box-shadow: var(--primary-shadow);
+}
+
+
+/* Scroll bar */
+.nice-scroll::-webkit-scrollbar,
+.carousel::-webkit-scrollbar {
+    background-color: none;
+    height: 10px;
+    width: 10px;
+}
+
+.nice-scroll::-webkit-scrollbar-thumb,
+.carousel::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--primary-color-muted);
+}
+
+.nice-scroll::-webkit-scrollbar-thumb:hover,
+.carousel::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-color);
+}
+
+.main {
+    padding-top: 130px;
+}
