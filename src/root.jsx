@@ -49,7 +49,8 @@ export default function Root() {
       setLanguageSignal(lang);
       console.log("setted")
       // return <Navigate href={lang} />;
-      return <Redirect />
+      // return <Redirect />
+      return redirect(lang);
     }
   }
 
@@ -58,17 +59,13 @@ export default function Root() {
     console.log(lang);
 
     if (lang != language()) {
-      setLanguageSignal(lang);
+      setLanguage(lang);
     }
   });
 
   createEffect(() => {
     console.log(language());
   })
-
-
-
-
 
   return (
     <Html lang={language()}>
