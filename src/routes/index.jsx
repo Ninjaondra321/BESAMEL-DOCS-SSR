@@ -16,7 +16,6 @@ function Redirect({ language }) {
         }
     });
 
-
     return (
         <div>
             <Outlet />

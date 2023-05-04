@@ -26,6 +26,8 @@ import NavBar from "./components/NavBar";
 import { redirect } from "solid-start/server";
 
 import Redirect from "./routes";
+import Docs from "./Pages/Docs";
+import Homepage from "./Pages/Homepage";
 
 
 const supportedLanguages = ["cs", "en"];
@@ -73,6 +75,7 @@ export default function Root() {
         <Title>BEŠAMEL css</Title>
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
+
       </Head>
       <Body>
 
@@ -80,18 +83,16 @@ export default function Root() {
           <NavBar language={language} setLanguage={setLanguage} languages={supportedLanguages} />
 
           <div className="main">
-            <div className="sections">
 
-              <Routes>
+            <Routes>
 
-                <Route path={language()} element={<div><h1>Elementtt</h1></div>} />
-                <Route path={language() + "/theme-creator"} element={<h1>Theme creator</h1>} />
-                <Route path={language() + "/cookies"} element={<h1>Theme creator</h1>} />
+              <Route path={"/"} element={<Homepage language={language} />} />
+              <Route path={"/theme-creator"} element={<h1>Theme creator</h1>} />
+              <Route path={"/cookies"} element={<h1>Theme creator</h1>} />
+              <Route path={"/docs/*a/*b"} element={<Docs language={language} />} />
 
-
-                <FileRoutes />
-              </Routes>
-            </div>
+              <FileRoutes />
+            </Routes>
           </div>
 
         </Suspense>

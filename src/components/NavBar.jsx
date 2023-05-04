@@ -57,14 +57,14 @@ function NavBar({ language, setLanguage, languages }) {
 
                 <div className="right">
                     <div className="m-hidden">
-                        <A href={language() + "/"} end={true}>Home</A>
-                        <A href={language() + "/docs"} >Docs</A>
-                        <A href={language() + "/theme-creator"}>Theme creator</A>
+                        <A href={"/"} end={true}>Home</A>
+                        <A href={"/docs"} >Docs</A>
+                        <A href={"/theme-creator"}>Theme creator</A>
                         <div className="dropdown">
 
                             <A href="/blog" className="dropdown-heading">Odkazy</A>
                             <div className="dropdown-window">
-                                <A href={language() + "/docs/introduction/xd"}>en -- xd</A>
+                                <A href={"/docs/introduction/xd"}>en -- xd</A>
                                 <A href="/blog/404">404</A>
                                 <A href="sections/backgrounds">Backgrounds</A>
                             </div>
