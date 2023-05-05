@@ -74,9 +74,12 @@ export default function Root() {
               <Route path={"/theme-creator"} element={<h1>Theme creator</h1>} />
               <Route path={"/cookies"} element={<h1>Theme creator</h1>} />
               <Route path={"/docs/*a/*b"} element={<Docs language={language} />} />
-              <Route path={"/docs/*a/*b"} element={<Docs language={language} />} />
+
+
 
               <FileRoutes />
+
+
               <Route path={"*"} element={<Page404 language={language} />} />
             </Routes>
           </div>
