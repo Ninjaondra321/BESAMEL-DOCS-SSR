@@ -1,13 +1,41 @@
 import { createSignal } from "solid-js";
 import { A } from "solid-start";
 
+const dictionary = {
+    "home": {
+        "cs": "Domů",
+        "en": "Home",
+    },
+    "docs": {
+        "cs": "Dokumentace",
+        "en": "Docs",
+    },
+    "theme-creator": {
+        "cs": "Tvůrce motivů",
+        "en": "Theme creator",
+    },
+    "examples": {
+        "cs": "Ukázky",
+        "en": "Examples",
+    },
+    "versions": {
+        "cs": "Verze",
+        "en": "Versions",
+    },
+}
+
+
+
 function NavBar({ language, setLanguage, languages }) {
+
+    console.log(dictionary)
+    console.log(dictionary["home"])
 
     console.log(language())
 
     const [showBanner, setShowBanner] = createSignal(true);
     const [drawerShown, setDrawerShown] = createSignal(false);
-    const [dictionary, setDictionary] = createSignal("translation_cs");
+    // const [dictionary, setDictionary] = createSignal("translation_cs");
 
     function updateHeight(useLessProps = undefined) {
         // Navbar height + banner height
@@ -57,18 +85,12 @@ function NavBar({ language, setLanguage, languages }) {
 
                 <div className="right">
                     <div className="m-hidden">
-                        <A href={"/"} end={true}>Home</A>
-                        <A href={"/docs"} >Docs</A>
-                        <A href={"/theme-creator"}>Theme creator</A>
-                        <div className="dropdown">
+                        <A href={"/"} end={true}>{dictionary["home"][language()]}</A>
+                        <A href={"/docs"} > {dictionary["docs"][language()]} </A>
+                        <A href={"/examples"} > {dictionary["examples"][language()]} </A>
+                        <A href={"/theme-creator"}>{dictionary["theme-creator"][language()]}</A>
+                        <A href={"/versions"}>{dictionary["versions"][language()]}</A>
 
-                            <A href="/blog" className="dropdown-heading">Odkazy</A>
-                            <div className="dropdown-window">
-                                <A href={"/docs/introduction/xd"}>en -- xd</A>
-                                <A href="/blog/404">404</A>
-                                <A href="sections/backgrounds">Backgrounds</A>
-                            </div>
-                        </div>
                         <div className="dropdown">
                             <p className="dropdown-heading">Dropdown</p>
                             <div className="dropdown-window">

@@ -25,9 +25,9 @@ import NavBar from "./components/NavBar";
 
 import { redirect } from "solid-start/server";
 
-import Redirect from "./routes";
 import Docs from "./Pages/Docs";
 import Homepage from "./Pages/Homepage";
+import Page404 from "./Pages/404";
 
 
 const supportedLanguages = ["cs", "en"];
@@ -49,25 +49,9 @@ export default function Root() {
     console.log(lang)
     if (supportedLanguages.includes(lang)) {
       setLanguageSignal(lang);
-      console.log("setted")
-      // return <Navigate href={lang} />;
-      // return <Redirect />
-      return redirect(lang);
     }
   }
 
-  createEffect(() => {
-    const lang = location.pathname.split("/")[1];
-    console.log(lang);
-
-    if (lang != language()) {
-      setLanguage(lang);
-    }
-  });
-
-  createEffect(() => {
-    console.log(language());
-  })
 
   return (
     <Html lang={language()}>
@@ -90,8 +74,10 @@ export default function Root() {
               <Route path={"/theme-creator"} element={<h1>Theme creator</h1>} />
               <Route path={"/cookies"} element={<h1>Theme creator</h1>} />
               <Route path={"/docs/*a/*b"} element={<Docs language={language} />} />
+              <Route path={"/docs/*a/*b"} element={<Docs language={language} />} />
 
               <FileRoutes />
+              <Route path={"*"} element={<Page404 language={language} />} />
             </Routes>
           </div>
 

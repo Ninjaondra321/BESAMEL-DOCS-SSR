@@ -3,13 +3,14 @@ import xd from '../docs/introduction/xd.mdx';
 import index from '../docs/introduction/(index).mdx';
 import dalsi from '../docs/introduction/dalsi.mdx';
 
-import { useLocation, useSearchParams } from 'solid-start';
+import { Head, Title, useLocation, useSearchParams } from 'solid-start';
 import { A } from 'solid-start';
+import { createEffect, createSignal } from 'solid-js';
 
 
 const sidebar = [
     {
-        "cs": "Úvod",
+        "cs": "Úvod <span class='badge secondary'>NOVÉ</span>",
         "en": "Introduction",
         "links": [
             {
@@ -18,8 +19,8 @@ const sidebar = [
                 "link": "/introduction/installation",
             },
             {
-                "cs": "Proč Bešamel?",
-                "en": "Why Bešamel?",
+                "cs": "Proč Bešamel?  <span class='badge secondary'>NOVÉ</span>",
+                "en": "Why Bešamel? <span class='badge secondary'>NEW</span>",
                 "link": "/introduction/why",
             }
         ]
@@ -62,17 +63,42 @@ function Docs({ language }) {
     const location = useLocation();
     console.log(location);
 
-    const path = location.pathname.split("/");
-    console.log(path);
+    const [version, setVersion] = createSignal(location["query"]["v"] || "latest");
+
+    createEffect(() => {
+        console.log(version());
+    })
+
+
 
     return (
         <>
+            {/* This appears to help not changing the title - do not remove */}
+            <Head>
+            </Head>
             <div className="sidebar left">
+                <h1>
+                    {version()}
+                </h1>
+
+                <label htmlFor="version">Version</label>
+
+                <select class='terciary' name="version" id="version">
+                    <option value="@">Latest</option>
+                    <option value="2.0">2.0</option>
+                    <option value="1.0">1.0</option>
+                </select>
+
+
+
                 {sidebar.map(item =>
                     <div>
-                        <h2>{item[language()]}</h2>
+                        <h2 innerHTML={item[language()]}></h2>
                         {item.links.map((obj, i) =>
-                            <A href={"/docs" + obj.link}>{obj[language()]}</A>
+                            <A href={"/docs" + obj.link} innerHTML={obj[language()]}>
+
+
+                            </A>
                         )}
 
                     </div>

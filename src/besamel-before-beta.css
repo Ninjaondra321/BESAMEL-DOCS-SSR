@@ -2225,3 +2225,15 @@ span.leader {
         margin: 30px;
     }
 }
+
+
+
+.nav-drawer {
+    backdrop-filter: blur(0px);
+    background-color: rgba(0, 0, 0, 0.473);
+}
+
+.nav-drawer.opened {
+    backdrop-filter: blur(5px);
+
+}
