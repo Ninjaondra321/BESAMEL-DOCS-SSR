@@ -1,8 +1,9 @@
 import solid from "solid-start/vite";
-import staticAdapter from "solid-start-static";
+import solidStatic from "solid-start-static";
 
 import { defineConfig } from "vite";
 export default defineConfig({
+  base: "/BESAMEL-DOCS/",
   plugins: [
     {
       ...(await import("@mdx-js/rollup")).default({
@@ -12,9 +13,7 @@ export default defineConfig({
       }),
       enforce: "pre",
     },
-    solid({
-      extensions: [".mdx", ".md"],
-    }),
-    solid({ adapter: staticAdapter() })
+    solid({ adapter: solidStatic() }),
+
   ],
 });
