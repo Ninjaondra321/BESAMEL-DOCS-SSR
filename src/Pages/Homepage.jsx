@@ -27,11 +27,16 @@ function Homepage() {
 
         <div className="hero-section padding-large" style={{ background: "var(--secondary-color)" }}>
             <div className="content center padding-medium">
-                <h1 className="responsive display">BEŠAMEL</h1>
+                <h1 className="responsive display ">BEŠAMEL</h1>
                 <h4 className="responsive display"
                     // center the text
                     style={{ "text-align": "center" }}
-                >Skvělý css framework</h4>
+                >
+                    <span className="muted">
+
+                        Skvělý css framework
+                    </span>
+                </h4>
                 <div className="responsive-rotate center padding-medium">
                     <button className="secondary large">Ukázky</button>
                     <button className="primary large">Dokumentace</button>
@@ -41,10 +46,10 @@ function Homepage() {
 
         <div className="change-theme-section padding">
             <div className="row w-12 responsive-rotate">
-                <div className="left pc-w-6 center">
+                <div className="left w-6 m-w-12 center">
                     <h4 className="responsive display">Neskutečně upravitelné!</h4>
                 </div>
-                <div className="right pc-w-6 center ">
+                <div className="right w-6 m-w-12 center ">
                     <div className="tabs wrap center-all">
                         <button className={" w-5 " + (theme() == "default" ? "primary" : "secondary")} onclick={() => changeTheme("default")}><h3 class="padding">Default</h3></button>
                         <button className={" w-5 " + (theme() == "port" ? "primary" : "secondary")} onclick={() => changeTheme("port")}><h3 class="padding">Port</h3></button>

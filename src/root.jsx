@@ -28,6 +28,8 @@ import { redirect } from "solid-start/server";
 import Docs from "./Pages/Docs";
 import Homepage from "./Pages/Homepage";
 import Page404 from "./Pages/404";
+import CookiesPage from "./Pages/CookiesPage";
+import CookiesBanner from "./components/CookiesBanner";
 
 
 const supportedLanguages = ["cs", "en"];
@@ -37,19 +39,31 @@ export default function Root() {
 
   const location = useLocation();
 
-  createEffect(() => {
-    console.log(location.pathname);
-  })
-
-
-
   const [language, setLanguageSignal] = createSignal("cs");
+  // const [cookiesAllowed, setCookiesAllowed] = createSignal(checkCookies());
 
   function setLanguage(lang) {
     console.log(lang)
     if (supportedLanguages.includes(lang)) {
       setLanguageSignal(lang);
     }
+  }
+
+  function checkCookies() {
+    const cookiesAllowed = localStorage.getItem("BESAMEL-DOCS-COOKIES-ALLOWED");
+    if (cookiesAllowed === "true") {
+      return true;
+    }
+    else if (cookiesAllowed === "false") {
+      return false;
+    } else {
+      return null;
+    }
+  }
+
+  function setCookies(value) {
+    localStorage.setItem("BESAMEL-DOCS-COOKIES-ALLOWED", value);
+    setCookiesAllowed(value);
   }
 
 
@@ -72,7 +86,7 @@ export default function Root() {
 
               <Route path={"/"} element={<Homepage language={language} />} />
               <Route path={"/theme-creator"} element={<h1>Theme creator</h1>} />
-              <Route path={"/cookies"} element={<h1>Theme creator</h1>} />
+              <Route path={"/cookies"} element={<CookiesPage language={language} />} />
               <Route path={"/docs/*a/*b"} element={<Docs language={language} />} />
               <Route path={"/docs/*a/*b"} element={<Docs language={language} />} />
 
@@ -80,6 +94,8 @@ export default function Root() {
               <Route path={"*"} element={<Page404 language={language} />} />
             </Routes>
           </div>
+
+          <CookiesBanner language={language} />
 
         </Suspense>
         <ErrorBoundary>

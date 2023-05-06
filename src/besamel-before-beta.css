@@ -2237,3 +2237,7 @@ span.leader {
     backdrop-filter: blur(5px);
 
 }
+
+.first-letter-capital:first-letter {
+    text-transform: capitalize;
+}
