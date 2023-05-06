@@ -60,6 +60,10 @@ function Homepage() {
             </div>
         </div>
 
+        <div className="cat">
+            <img src="https://cataas.com/cat/says/' '" alt="" />
+        </div>
+
 
     </div>);
 }
